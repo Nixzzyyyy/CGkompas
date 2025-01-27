@@ -214,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  'ashfak@email.com',
+                  'abc@email.com',
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 14,
@@ -229,10 +229,15 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: Icon(Icons.person),
         title: Text('Moj profil'),
         onTap: () {
-          UserProfilePage(
-            email: "abc@gmail.com", 
-            password: "123", 
-            username: "nik"
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UserProfilePage(
+                email: "abc@gmail.com", 
+                password: "123", 
+                username: "nik",
+                ),
+                ),
             );
         },
       ),
