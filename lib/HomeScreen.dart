@@ -5,6 +5,8 @@ import 'dart:ui';
 import 'event_details_screen.dart';
 import 'login.dart';
 import 'about.dart';
+import 'package:confetti/confetti.dart';
+import 'savedEvents.dart';
 
 class HomeScreen extends StatefulWidget {
   final String selectedCategory;
@@ -245,7 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: Icon(Icons.bookmark),
         title: Text('Događaji'),
         onTap: () {
-          Navigator.pop(context);
+          SavedEventsPage();
         },
       ),
      ListTile(
@@ -564,69 +566,129 @@ class EventCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Card(
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
-                  imagePath,
-                  fit: BoxFit.cover,
-                  height: 160,
-                  width: double.infinity,
+Widget build(BuildContext context) {
+  final ConfettiController _confettiController =
+      ConfettiController(duration: Duration(seconds: 1)); 
+
+  return GestureDetector(
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Card(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    imagePath,
+                    fit: BoxFit.cover,
+                    height: 160,
+                    width: double.infinity,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      '$date - $location',
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                    SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: onTap,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: themeColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                       ),
-                      child: Text(
-                        'Detalji',
-                        style: TextStyle(fontSize: 14, color: Colors.white),
+                      SizedBox(height: 8),
+                      Text(
+                        '$date - $location',
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: onTap,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: themeColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 18, vertical: 10),
+                        ),
+                        child: Text(
+                          'Detalji',
+                          style: TextStyle(fontSize: 14, color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+              ],
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: StatefulBuilder(
+                builder: (context, setState) {
+                  bool isBookmarked = false;
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          isBookmarked
+                              ? Icons.bookmark
+                              : Icons.bookmark_border,
+                          color: isBookmarked ? Colors.red : Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isBookmarked = !isBookmarked;
+                            if (isBookmarked) {
+                              _confettiController.play(); 
+                              SavedEventsPage.savedEvents.add({
+                                'imagePath': imagePath,
+                                'title': title,
+                                'date': date,
+                                'location': location,
+                              });
+                            } else {
+                              SavedEventsPage.savedEvents.removeWhere((event) =>
+                                  event['title'] == title &&
+                                  event['date'] == date &&
+                                  event['location'] == location);
+                            }
+                          });
+                        },
+                      ),
+                      ConfettiWidget(
+                        confettiController: _confettiController,
+                        blastDirectionality: BlastDirectionality
+                            .explosive, 
+                        shouldLoop: false,
+                        colors: [
+                          Colors.red,
+                          Colors.blue,
+                          Colors.green,
+                          Colors.yellow
+                        ],
+                      ),
+                    ],
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
