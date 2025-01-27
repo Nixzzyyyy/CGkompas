@@ -38,16 +38,19 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
              crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CircleAvatar(
-                    radius: 80,
-                    backgroundImage: AssetImage(''), 
-                  ),
-            const SizedBox(height: 20),
+           ClipOval(
+            child: Image.asset(
+              'assets/images/logo.png',
+                width: 250, 
+                height: 250,  
+              ),
+            ),
+            const SizedBox(height: 10),
             const Text(
               "Log in",
               textAlign: TextAlign.left,

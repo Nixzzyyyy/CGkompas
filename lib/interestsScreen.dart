@@ -67,37 +67,49 @@ class _InterestsScreenState extends State<InterestsScreen> {
                 ),
                 itemCount: interests.length,
                 itemBuilder: (context, index) {
-                  final interest = interests[index];
-                  final isSelected = selectedInterest == interest;
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedInterest = interest;
-                      });
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? interestColors[index].withOpacity(0.7)
-                            : interestColors[index],
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: isSelected ? Colors.black : Colors.transparent,
-                          width: 2,
-                        ),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        interest,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ),
-                  );
-                },
+  final interest = interests[index];
+  final isSelected = selectedInterest == interest;
+  return GestureDetector(
+    onTap: () {
+      setState(() {
+        selectedInterest = interest;
+      });
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isSelected ? Colors.black : Colors.transparent,
+          width: 2,
+        ),
+        image: DecorationImage(
+          image: AssetImage('assets/images/${interest.toLowerCase()}.jpg'), 
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(isSelected ? 0.5 : 0.7), 
+            BlendMode.srcATop,
+          ),
+        ),
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        interest,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.white, 
+          shadows: [
+            Shadow(
+              offset: Offset(1, 1),
+              blurRadius: 3,
+              color: Colors.black54, 
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+},
               ),
             ),
             Container(

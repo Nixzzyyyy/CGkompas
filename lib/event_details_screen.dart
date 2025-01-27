@@ -34,6 +34,7 @@ class EventDetailsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 40), 
                 Container(
                   height: 200,
                   decoration: BoxDecoration(
