@@ -247,7 +247,12 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: Icon(Icons.bookmark),
         title: Text('Događaji'),
         onTap: () {
-          SavedEventsPage();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SavedEventsPage(),
+              ),
+            );
         },
       ),
      ListTile(
@@ -637,7 +642,13 @@ Widget build(BuildContext context) {
               right: 10,
               child: StatefulBuilder(
                 builder: (context, setState) {
-                  bool isBookmarked = false;
+                  bool isBookmarked = SavedEventsPage.savedEvents.any(
+                    (event) =>
+                        event['title'] == title &&
+                        event['date'] == date &&
+                        event['location'] == location,
+                  );
+
                   return Stack(
                     alignment: Alignment.center,
                     children: [
@@ -650,15 +661,14 @@ Widget build(BuildContext context) {
                         ),
                         onPressed: () {
                           setState(() {
-                            isBookmarked = !isBookmarked;
-                            if (isBookmarked) {
-                              _confettiController.play(); 
+                            if (!isBookmarked) {
                               SavedEventsPage.savedEvents.add({
                                 'imagePath': imagePath,
                                 'title': title,
                                 'date': date,
                                 'location': location,
                               });
+                              _confettiController.play(); 
                             } else {
                               SavedEventsPage.savedEvents.removeWhere((event) =>
                                   event['title'] == title &&
@@ -670,8 +680,7 @@ Widget build(BuildContext context) {
                       ),
                       ConfettiWidget(
                         confettiController: _confettiController,
-                        blastDirectionality: BlastDirectionality
-                            .explosive, 
+                        blastDirectionality: BlastDirectionality.explosive,
                         shouldLoop: false,
                         colors: [
                           Colors.red,
