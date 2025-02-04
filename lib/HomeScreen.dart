@@ -44,6 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
       'description':
           'Proslavite početak proljeća uz jedinstveni festival posvećen mimozi, sa paradama, koncertima i umjetničkim događajima.',
       'themeColor': const Color.fromARGB(255, 53, 125, 203),
+      'latitude': 42.456121,
+      'longitude': 18.531664,
     },
     {
       'title': 'Bokeljska Noć',
@@ -54,6 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
       'description':
           'Jedinstvena noć proslave u starom gradu Kotoru uz osvetljene barke, muziku i vatromet.',
       'themeColor': const Color(0xFF57C6E1),
+      'latitude': 42.425337,
+      'longitude': 18.770962,
     },
     {
       'title': 'Bedem Fest',
@@ -64,6 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
       'description':
           'Uživajte u energiji Bedem Festa sa nastupima najboljih domaćih i regionalnih bendova na istorijskom bedemu.',
       'themeColor': const Color(0xFFFFA07A),
+      'latitude': 42.783746,
+      'longitude': 18.949323,
     },
     {
       'title': 'Filmski Festival U Tivtu',
@@ -74,6 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
       'description':
           'Pozivamo vas na nezaboravne filmske projekcije na otvorenom uz more, uz prisustvo renomiranih filmskih umjetnika.',
       'themeColor': const Color(0xFFFF6F61),
+      'latitude': 42.432357,
+      'longitude': 18.702109,
     },
   ];
 
@@ -101,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MapScreen(),
+          builder: (context) => MapScreen(events: _events),
         ),
       ).then((_) {
         setState(() {
