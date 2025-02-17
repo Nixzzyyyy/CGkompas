@@ -472,8 +472,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               category['label'],
                               style: TextStyle(
                                 color: isSelected
-                                    ? Colors.white
-                                    : Colors.black87,
+                                    ?  Colors.white
+                                    :Colors.black87,
                               ),
                             ),
                           ),
